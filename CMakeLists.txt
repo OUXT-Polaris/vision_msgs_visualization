@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   vision_msgs
   visualization_msgs
   image_transport
+  cv_bridge
 )
 
 catkin_package(
