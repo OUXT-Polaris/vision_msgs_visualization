@@ -52,6 +52,10 @@ void Detection2DVisualizer::visionInfoCallback(const vision_msgs::VisionInfo::Co
 
 void Detection2DVisualizer::callback(const sensor_msgs::ImageConstPtr& image, const vision_msgs::Detection2DArrayConstPtr& detection)
 {
+    if(!classes_)
+    {
+        return;
+    }
     cv_bridge::CvImagePtr cv_ptr;
     try
     {
