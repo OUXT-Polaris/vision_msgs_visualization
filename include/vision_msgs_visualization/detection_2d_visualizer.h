@@ -44,6 +44,7 @@ private:
     ros::Subscriber vision_info_sub_;
     void visionInfoCallback(const vision_msgs::VisionInfo::ConstPtr msg);
     boost::optional<std::map<int,std::string> > classes_;
+    boost::optional<std::map<int,cv::Scalar> > colors_;
 };
 
 #endif  //VISION_MSGS_VISUALIZATION_DETECTION_2D_VISUALIZER_H_INCLUDED

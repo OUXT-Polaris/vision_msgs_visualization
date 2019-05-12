@@ -28,6 +28,8 @@ void Detection2DVisualizer::visionInfoCallback(const vision_msgs::VisionInfo::Co
     using namespace boost::property_tree;
     ptree pt;
     std::map<int,std::string> classes;
+    std::map<int,cv::Scalar> colors;
+    cv::RNG rng(313);
     read_xml(ss, pt);
     BOOST_FOREACH (const ptree::value_type& child, pt.get_child("vision_info"))
     {
@@ -37,7 +39,9 @@ void Detection2DVisualizer::visionInfoCallback(const vision_msgs::VisionInfo::Co
             boost::optional<std::string> name = child.second.get_optional<std::string>("<xmlattr>.name");
             if(id && name)
             {
+                cv::Scalar color = cv::Scalar(rng(256), rng(256), rng(256));
                 classes[*id] = *name;
+                colors[*id] = color;
             }
             else
             {
@@ -47,6 +51,7 @@ void Detection2DVisualizer::visionInfoCallback(const vision_msgs::VisionInfo::Co
         }
     }
     classes_ = classes;
+    colors_ = colors;
     return;
 }
 
@@ -56,6 +61,12 @@ void Detection2DVisualizer::callback(const sensor_msgs::ImageConstPtr& image, co
     {
         return;
     }
+    if(!colors_)
+    {
+        return;
+    }
+    std::map<int,std::string> classes = *classes_;
+    std::map<int,cv::Scalar> colors = *colors_;
     cv_bridge::CvImagePtr cv_ptr;
     try
     {
@@ -66,5 +77,35 @@ void Detection2DVisualizer::callback(const sensor_msgs::ImageConstPtr& image, co
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
+    for(auto detection_itr = detection->detections.begin(); detection_itr != detection->detections.end(); detection_itr++)
+    {
+        boost::optional<vision_msgs::ObjectHypothesisWithPose> result;
+        for(auto result_itr = detection_itr->results.begin(); result_itr != detection_itr->results.end(); result_itr++)
+        {
+            if(!result)
+            {
+                result = *result_itr;
+            }
+            else
+            {
+                if(result_itr->score > result->score)
+                {
+                    result = *result_itr;
+                }
+            }
+        }
+        if(result)
+        {
+            int x0 = (int)(detection_itr->bbox.center.x-detection_itr->bbox.size_x/2.0);
+            int x1 = (int)(detection_itr->bbox.center.x+detection_itr->bbox.size_x/2.0);
+            int y0 = (int)(detection_itr->bbox.center.y-detection_itr->bbox.size_y/2.0);
+            int y1 = (int)(detection_itr->bbox.center.y+detection_itr->bbox.size_y/2.0);
+            cv::rectangle(cv_ptr->image, {x0, y0}, {x1, y1}, colors[result->id], 2);
+            int text_y0 = y0 + ((y0 > 30) ? -15 : 15);
+            std::string label = classes[result->id] + ":" + std::to_string(result->score*100.0) + "%";
+            cv::putText(cv_ptr->image, label, {x0, text_y0}, cv::FONT_HERSHEY_SIMPLEX, 0.5, colors[result->id], 2);
+        }
+    }
+    image_pub_.publish(cv_ptr->toImageMsg());
     return;
 }
