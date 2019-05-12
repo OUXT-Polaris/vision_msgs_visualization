@@ -22,3 +22,13 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
+
+add_executable(detection_2d_visualizer_node src/detection_2d_visualizer_node.cpp src/detection_2d_visualizer.cpp)
+target_link_libraries(detection_2d_visualizer_node ${catkin_LIBRARIES})
+
+# Install library/executable
+install(TARGETS detection_2d_visualizer_node
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
