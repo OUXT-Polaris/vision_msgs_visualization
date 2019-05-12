@@ -9,12 +9,13 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   vision_msgs
   visualization_msgs
+  image_transport
 )
 
 catkin_package(
   INCLUDE_DIRS include
 # LIBRARIES vision_msgs_visualization
-  CATKIN_DEPENDS message_filters roscpp sensor_msgs vision_msgs visualization_msgs
+  CATKIN_DEPENDS message_filters roscpp sensor_msgs vision_msgs visualization_msgs image_transport
 #  DEPENDS system_lib
 )
 

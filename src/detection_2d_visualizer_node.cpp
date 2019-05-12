@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     ros::init(argc, argv, "detection_2d_visualizer_node");
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
+    Detection2DVisualizer visualizer = Detection2DVisualizer(nh,pnh);
     ros::spin();
     return 0;
 }
