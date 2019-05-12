@@ -15,9 +15,14 @@
 // Headers in STL
 #include <memory>
 #include <map>
+#include <sstream>
 
 // Headers in Boost
 #include <boost/optional.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 
 class Detection2DVisualizer
 {
