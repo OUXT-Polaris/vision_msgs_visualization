@@ -103,7 +103,7 @@ void Detection2DVisualizer::callback(const sensor_msgs::ImageConstPtr& image, co
             cv::rectangle(cv_ptr->image, {x0, y0}, {x1, y1}, colors[result->id], 2);
             int text_y0 = y0 + ((y0 > 30) ? -15 : 15);
             std::string label = classes[result->id] + ":" + std::to_string(result->score*100.0) + "%";
-            cv::putText(cv_ptr->image, label, {x0, text_y0}, cv::FONT_HERSHEY_SIMPLEX, 0.5, colors[result->id], 2);
+            cv::putText(cv_ptr->image, label, {x0, text_y0}, cv::FONT_HERSHEY_SIMPLEX, 0.5, colors[result->id], 1, false);
         }
     }
     image_pub_.publish(cv_ptr->toImageMsg());
