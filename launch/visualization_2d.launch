@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="node_name" default="detection_2d_visualizer_node"/>
+    <arg name="image_topic" default="image_raw"/>
+    <arg name="detection_topic" default="detection"/>
+    <arg name="vision_info_topic" default="vision_info"/>
+
+    <node pkg="vision_msgs_visualization" type="detection_2d_visualizer_node" name="$(arg node_name)" output="log" respawn="true" respawn_delay="0">
+        <param name="image_topic" value="$(arg image_topic)"/>
+        <param name="detection_topic" value="$(arg detection_topic)"/>
+        <param name="vision_info_topic" value="$(arg vision_info_topic)"/>
+    </node>
+</launch>
