@@ -27,6 +27,7 @@ include_directories(
 
 add_executable(detection_2d_visualizer_node src/detection_2d_visualizer_node.cpp src/detection_2d_visualizer.cpp)
 target_link_libraries(detection_2d_visualizer_node ${catkin_LIBRARIES})
+add_dependencies(detection_2d_visualizer_node ${catkin_EXPORTED_TARGETS})
 
 # Install library/executable
 install(TARGETS detection_2d_visualizer_node
