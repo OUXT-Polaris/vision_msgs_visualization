@@ -9,6 +9,9 @@
 #include <vision_info_server/vision_info_parser.h>
 #include <visualization_msgs/MarkerArray.h>
 
+// Headers in STL
+#include <random>
+
 class Detection3DVisualizer
 {
 public:
@@ -19,12 +22,14 @@ private:
     ros::NodeHandle pnh_;
     void detectionCallback(const vision_msgs::Detection3DArray::ConstPtr msg);
     void visionInfoCallback(const vision_msgs::VisionInfo::ConstPtr msg);
+    boost::optional<visualization_msgs::MarkerArray> generateMarker(vision_msgs::Detection3DArray detection);
     std::string vision_info_topic_;
     std::string detection_topic_;
     ros::Subscriber detection_sub_;
     ros::Subscriber vision_info_sub_;
     vision_info_parser::VisionInfoParser parser_;
     boost::optional<std::map<int,std::string> > class_info_;
+    std::map<int,std_msgs::ColorRGBA> color_lists_;
     ros::Publisher marker_pub_;
 };
 
