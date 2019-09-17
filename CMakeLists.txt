@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
   image_transport
   cv_bridge
+  vision_info_server
 )
 
 catkin_package(
@@ -29,8 +30,12 @@ add_executable(detection_2d_visualizer_node src/detection_2d_visualizer_node.cpp
 target_link_libraries(detection_2d_visualizer_node ${catkin_LIBRARIES})
 add_dependencies(detection_2d_visualizer_node ${catkin_EXPORTED_TARGETS})
 
+add_executable(detection_3d_visualizer_node src/detection_3d_visualizer_node.cpp src/detection_3d_visualizer.cpp)
+target_link_libraries(detection_3d_visualizer_node ${catkin_LIBRARIES})
+add_dependencies(detection_3d_visualizer_node ${catkin_EXPORTED_TARGETS})
+
 # Install library/executable
-install(TARGETS detection_2d_visualizer_node
+install(TARGETS detection_2d_visualizer_node detection_3d_visualizer_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
