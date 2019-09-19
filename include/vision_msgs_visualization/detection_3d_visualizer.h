@@ -31,6 +31,8 @@ private:
     boost::optional<std::map<int,std::string> > class_info_;
     std::map<int,std_msgs::ColorRGBA> color_lists_;
     ros::Publisher marker_pub_;
+    bool publish_model_marker_;
+    std::map<std::string,std::string> model_path_lists_;
 };
 
 #endif  //VISION_MSGS_VISUALIZATION_DETECTION_3D_VISUALIZER_H_INCLUDED
